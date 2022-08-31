@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatButtonModule } from '@angular/material/button';
+import { NgxGanttModule } from '@worktile/gantt';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -19,6 +20,7 @@ import { EmployeeComponent } from './employee/employee.component';
     BrowserModule,
     MatSliderModule, 
     MatButtonModule,
+    NgxGanttModule,
     AppRoutingModule,
     BrowserAnimationsModule
   ],
