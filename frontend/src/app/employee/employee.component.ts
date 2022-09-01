@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpClient } from "@angular/common/http";
+import {map} from "rxjs/operators";
+
 
 @Component({
   selector: 'app-employee',
@@ -7,7 +10,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EmployeeComponent implements OnInit {
 
-  constructor() { }
+  constructor(private http: HttpClient) {
+    this.http.get("api/v1/Employee")
+      .pipe(
+        map((res: any) => JSON.parse(res))
+      )
+      .subscribe((res: any) => {
+        console.log(res);
+        console.log("BBB");
+      });
+  }
 
   ngOnInit(): void {
   }

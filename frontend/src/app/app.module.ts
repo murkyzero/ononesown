@@ -1,4 +1,6 @@
 import { NgModule } from '@angular/core';
+import {HttpClientModule} from "@angular/common/http";                                                                                                                                  
+
 import { BrowserModule } from '@angular/platform-browser';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatButtonModule } from '@angular/material/button';
@@ -17,6 +19,7 @@ import { EmployeeComponent } from './employee/employee.component';
     EmployeeComponent
   ],
   imports: [
+    HttpClientModule,
     BrowserModule,
     MatSliderModule, 
     MatButtonModule,
