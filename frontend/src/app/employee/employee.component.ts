@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { map } from "rxjs/operators";
-
+import { EmployeeService } from './employee.service';
+import { Employee } from './employee.model';
 
 @Component({
   selector: 'app-employee',
@@ -10,31 +11,44 @@ import { map } from "rxjs/operators";
 })
 export class EmployeeComponent implements OnInit {
 
-  constructor(private http: HttpClient) {
-    this.http.get("api/v1/employee")
-      .pipe(
-      // map((res: any) => JSON.parse(res))
-    )
-      .subscribe((res: any) => {
-        console.log(res);
-        console.log("BBB");
-      });
-  }
+  constructor(private employeeService: EmployeeService) { }
+  // constructor(private http: HttpClient) {
+  //   this.http.get("api/v1/employee")
+  //     .pipe(
+  //     // map((res: any) => JSON.parse(res))
+  //   )
+  //     .subscribe((res: any) => {
+  //       console.log(res);
+  //       console.log("BBB");
+  //     });
+  // }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void { }
   /**
    * 新增代辦事項
    *
    * @param {HTMLInputElement} inputRef - 輸入框的元素實體
    * @memberof TodoListComponent
    */
-  addEmployee( event: Event  ): void {
-    const value = (event.target as HTMLInputElement).value;
-    
+  addEmployee(event: Event): void {
 
-      // this.todoListService.add(todo);
-      console.log(value);
-      (event.target as HTMLInputElement).value='';
+    var inputRef = event.target as HTMLInputElement;
+    const todo = inputRef.value.trim();
+
+    if (todo) {
+      this.employeeService.add(todo);
+      inputRef.value = '';
+    }
+
+  }
+  getList(): Employee[] {
+
+    let list: Employee[] = [];
+
+        list = this.employeeService.getList();
+
+
+    return list;
+
   }
 }

@@ -6,15 +6,17 @@
         <h1>todos</h1>
         <input placeholder="ad" autofocus (keyup.enter)="addEmployee($event)">
     </header>
-    <section>
-        <ul>
-            <li>
-                <input type="checkbox">
-                <label>eeee</label>
+    <section class="main" *ngIf="getList().length">
+
+        <ul class="todo-list">
+            <li *ngFor="let Employee of getList()">
+                <div class="view">
+                    <input class="toggle" type="checkbox">
+                    <label>{{ Employee.getAd() }}</label>
+                    <button class="destroy"></button>
+                </div>
             </li>
         </ul>
-        <footer>
 
-        </footer>
     </section>
 </section>
