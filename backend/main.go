@@ -12,9 +12,9 @@ func setupRouter() *gin.Engine {
 
 	user := r.Group("/api/v1/employee")
 	{
-		user.POST("/", controllers.CreateEmployee)
+		user.POST("", controllers.CreateEmployee)
 		user.GET("/:ad", controllers.GetEmployeeByAd)
-		user.GET("/", controllers.GetEmployees)
+		user.GET("", controllers.GetEmployees)
 	}
 	return r
 }

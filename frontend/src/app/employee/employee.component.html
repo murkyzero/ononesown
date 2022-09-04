@@ -1,22 +1,18 @@
 <section>
+    <form [formGroup]="employeeForm" (ngSubmit)="add()">
+        <label for="ad">員編</label>
+        <input id="ad" type="text" formControlName="ad" required>
 
-    <header>
-        <p>employee works!</p>
-
-        <h1>todos</h1>
-        <input placeholder="ad" autofocus (keyup.enter)="addEmployee($event)">
-    </header>
-    <section class="main" *ngIf="getList().length">
-
-        <ul class="todo-list">
-            <li *ngFor="let Employee of getList()">
-                <div class="view">
-                    <input class="toggle" type="checkbox">
-                    <label>{{ Employee.getAd() }}</label>
-                    <button class="destroy"></button>
-                </div>
-            </li>
-        </ul>
-
-    </section>
+        <label for="name">姓名</label>
+        <input id="name" type="text" formControlName="name" required>
+        <button type="submit" [disabled]="!employeeForm.valid">增加</button>
+    <ul>
+        <li *ngFor="let employee of employees">
+            <span>{{employee.ad}}</span>
+            <span>{{employee.name}}</span>
+        </li>
+    </ul>
+    </form>
+    <!-- <p>Form Value: {{ employeeForm.value | json }}</p>
+    <p>Form Status: {{ employeeForm.status }}</p> -->
 </section>
