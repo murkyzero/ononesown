@@ -1,15 +1,15 @@
 <section>
     <form [formGroup]="employeeForm" (ngSubmit)="add()">
-        <label for="ad">員編</label>
-        <input id="ad" type="text" formControlName="ad" required>
+        <label for="AD">員編</label>
+        <input id="AD" type="text" formControlName="AD" required>
 
-        <label for="name">姓名</label>
-        <input id="name" type="text" formControlName="name" required>
+        <label for="Name">姓名</label>
+        <input id="Name" type="text" formControlName="Name" required>
         <button type="submit" [disabled]="!employeeForm.valid">增加</button>
     <ul>
         <li *ngFor="let employee of employees">
-            <span>{{employee.ad}}</span>
-            <span>{{employee.name}}</span>
+            <span>{{employee.AD}}</span>
+            <span>{{employee.Name}}</span>
         </li>
     </ul>
     </form>

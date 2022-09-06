@@ -3,6 +3,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 
 import { Observable, of } from 'rxjs';
 
+import { MessageService } from './message.service';
+
 /** Type of the handleError function returned by HttpErrorHandler.createHandleError */
 export type HandleError =
     <T> (operation?: string, result?: T) => (error: HttpErrorResponse) => Observable<T>;

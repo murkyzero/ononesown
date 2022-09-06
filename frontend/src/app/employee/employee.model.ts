@@ -1,5 +1,5 @@
 export interface Employee {
 
-    ad :string;
-    name: string; 
+    AD :string;
+    Name: string; 
 }

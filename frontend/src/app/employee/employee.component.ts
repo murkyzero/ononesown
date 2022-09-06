@@ -17,8 +17,8 @@ export class EmployeeComponent implements OnInit {
   editEmployee:Employee|undefined;
 
   employeeForm = this.fb.group({
-    ad: ['', Validators.required],
-    name: ['', Validators.required]
+    AD: ['', Validators.required],
+    Name: ['', Validators.required]
   });
 
   constructor(private employeeService: EmployeeService, private fb: FormBuilder) { }
@@ -35,14 +35,16 @@ export class EmployeeComponent implements OnInit {
   add() {
     // TODO: Use EventEmitter with form value
     console.warn(this.employeeForm.value);
-    console.warn(this.employeeForm.get('ad')?.value);
+    console.warn(this.employeeForm.get('AD')?.value);
     // var ad =this.employeeForm.get('ad').value;
     // if(!ad) ad="1";
-    var ad=this.employeeForm.get('ad')?.value;
-    if(!ad) ad="";
-    var name=this.employeeForm.get('name')?.value;
-    if(!name) name="";
-    const newEmployee :Employee={ad,name} as Employee;
+    var AD=this.employeeForm.get('AD')?.value;
+    if(!AD) AD="";
+    var Name=this.employeeForm.get('Name')?.value;
+    if(!Name) Name="";
+    console.log("AD="+AD);
+    console.log("Name="+Name);
+    const newEmployee :Employee={AD,Name} as Employee;
     this.employeeService
     .addEmployee(newEmployee)
     .subscribe(employee => this.employees.push(employee));

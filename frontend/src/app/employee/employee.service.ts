@@ -36,10 +36,10 @@ export class EmployeeService {
       );
   }
   /** POST: add a new hero to the database */
-  addEmployee(hero: Employee): Observable<Employee> {
-    return this.http.post<Employee>(this.employeeUrl, hero, httpOptions)
+  addEmployee(employee: Employee): Observable<Employee> {
+    return this.http.post<Employee>(this.employeeUrl, employee, httpOptions)
       .pipe(
-        catchError(this.handleError('addEmployee', hero))
+        catchError(this.handleError('addEmployee', employee))
       );
   }
 
