@@ -2,12 +2,15 @@ package controllers
 
 import (
 	"context"
+	"encoding/json"
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 
 	"backend/models"
 
+	"github.com/davecgh/go-spew/spew"
 	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis/v8"
 )
@@ -48,14 +51,32 @@ func GetEmployeeByAd(c *gin.Context) {
 }
 
 func GetEmployees(c *gin.Context) {
-	allEmps := []models.Employee{{AD: "11111", Name: "张三"}, {AD: "22222", Name: "李四"}}
+	// allEmps := []models.Employee{{AD: "11111", Name: "张三"}, {AD: "22222", Name: "李四"}}
+	logger := log.New(os.Stdout, "DEBUG", log.Ldate|log.Ltime)
+	ADList, _ := RC.SMembers(ctx, "employee").Result()
+	// ADNum, _ := RC.SCard(ctx, "employee").Result()
+	spew.Dump(ADList)
+	var employee models.Employee
+	emps := make([]models.Employee, 0)
+	for i, AD := range ADList {
+		logger.Println("i=" + strconv.Itoa(i))
+		logger.Println("AD=" + AD)
+		empData, _ := RC.HGetAll(ctx, AD).Result()
+		spew.Dump(empData)
+		jsonstr, _ := json.Marshal(empData)
+		spew.Dump(jsonstr)
+
+		json.Unmarshal(jsonstr, &employee)
+		spew.Dump(employee)
+		emps = append(emps, employee)
+		spew.Dump(emps)
+	}
+
+	c.IndentedJSON(200, emps)
 	//allEmps := []emp{{AD: "11111", NAME: "张三"}}
-	c.IndentedJSON(200, allEmps)
 	//c.JSON(http.StatusOK, gin.H{
 	//	{"ad":   "11111",
 	//	"name": "all",},
-	logger := log.New(os.Stdout, "DEBUG", log.Ldate|log.Ltime)
-	logger.Println("GetEmployees")
 	//})
 
 }

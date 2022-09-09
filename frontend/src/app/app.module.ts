@@ -5,6 +5,7 @@ import { HttpClientModule } from "@angular/common/http";
 import { BrowserModule } from '@angular/platform-browser';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatButtonModule } from '@angular/material/button';
+import { MatTableModule } from '@angular/material/table';
 import { NgxGanttModule } from '@worktile/gantt';
 
 import { HttpErrorHandler, HandleError } from './http-error-handler.service';
@@ -13,6 +14,7 @@ import { AppComponent } from './app.component';
 import { ScheduleComponent } from './schedule/schedule.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EmployeeComponent } from './employee/employee.component';
+import { MatSortModule } from '@angular/material/sort';
 
 @NgModule({
   declarations: [
@@ -20,12 +22,16 @@ import { EmployeeComponent } from './employee/employee.component';
     ScheduleComponent,
     EmployeeComponent
   ],
+  exports: [
+    MatSortModule,
+  ],
   imports: [
     HttpClientModule,
     ReactiveFormsModule,
     BrowserModule,
     MatSliderModule,
     MatButtonModule,
+    MatTableModule,
     NgxGanttModule,
     AppRoutingModule,
     BrowserAnimationsModule
