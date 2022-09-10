@@ -15,6 +15,7 @@ func setupRouter() *gin.Engine {
 		user.POST("", controllers.CreateEmployee)
 		user.GET("/:ad", controllers.GetEmployeeByAd)
 		user.GET("", controllers.GetEmployees)
+		user.DELETE("/:AD", controllers.DelEmployeeByAd)
 	}
 	return r
 }

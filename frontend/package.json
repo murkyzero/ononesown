@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "dev": "ng serve --proxy-config proxy.conf.json",
+    "dev": "ng serve --proxy-config proxy.conf.json  --host 192.168.0.209",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
@@ -18,12 +18,14 @@
     "@angular/core": "^14.0.0-next.0",
     "@angular/forms": "^14.0.0-next.0",
     "@angular/material": "^14.2.0",
+    "@angular/material-moment-adapter": "^14.2.1",
     "@angular/platform-browser": "^14.0.0-next.0",
     "@angular/platform-browser-dynamic": "^14.0.0-next.0",
     "@angular/router": "^14.0.0-next.0",
     "@worktile/gantt": "^13.1.2",
     "google-protobuf": "github:protocolbuffers/protobuf-javascript",
     "html2canvas": "^1.4.1",
+    "moment": "^2.29.4",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"

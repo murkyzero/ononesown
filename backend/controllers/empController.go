@@ -6,7 +6,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"strconv"
 
 	"backend/models"
 
@@ -17,9 +16,11 @@ import (
 
 var RC *redis.Client
 var ctx = context.Background()
+var logger *log.Logger
 
 func init() {
 	RC = newClient()
+	logger = log.New(os.Stdout, "DEBUG ", log.Ldate|log.Ltime)
 }
 
 func newClient() *redis.Client {
@@ -52,24 +53,23 @@ func GetEmployeeByAd(c *gin.Context) {
 
 func GetEmployees(c *gin.Context) {
 	// allEmps := []models.Employee{{AD: "11111", Name: "张三"}, {AD: "22222", Name: "李四"}}
-	logger := log.New(os.Stdout, "DEBUG", log.Ldate|log.Ltime)
 	ADList, _ := RC.SMembers(ctx, "employee").Result()
 	// ADNum, _ := RC.SCard(ctx, "employee").Result()
-	spew.Dump(ADList)
+	//spew.Dump(ADList)
 	var employee models.Employee
 	emps := make([]models.Employee, 0)
-	for i, AD := range ADList {
-		logger.Println("i=" + strconv.Itoa(i))
-		logger.Println("AD=" + AD)
+	for _, AD := range ADList {
+		//logger.Println("i=" + strconv.Itoa(i))
+		// logger.Println("AD=" + AD)
 		empData, _ := RC.HGetAll(ctx, AD).Result()
-		spew.Dump(empData)
+		// spew.Dump(empData)
 		jsonstr, _ := json.Marshal(empData)
-		spew.Dump(jsonstr)
+		// spew.Dump(jsonstr)
 
 		json.Unmarshal(jsonstr, &employee)
-		spew.Dump(employee)
+		// spew.Dump(employee)
 		emps = append(emps, employee)
-		spew.Dump(emps)
+		// spew.Dump(emps)
 	}
 
 	c.IndentedJSON(200, emps)
@@ -82,7 +82,6 @@ func GetEmployees(c *gin.Context) {
 }
 
 func CreateEmployee(c *gin.Context) {
-	logger := log.New(os.Stdout, "DEBUG ", log.Ldate|log.Ltime)
 	var emp models.Employee
 	emp.AD = c.PostForm("AD")
 	emp.Name = c.PostForm("Name")
@@ -124,4 +123,27 @@ func CreateEmployee(c *gin.Context) {
 	// fmt.Println("key", val)
 	// logger.Println("CreateEmployee")
 	// logger.Println("val=" + val)
+}
+
+func DelEmployeeByAd(c *gin.Context) {
+	logger.Println("DelEmployeeByAd")
+	var emp models.Employee
+	emp.AD = c.Param("AD")
+	logger.Println("emp{", emp.AD, ",", emp.Name, "}")
+	// val, err1 := RC.SPop(ctx, emp.AD).Result()
+	// err2 := RC.Del(ctx, emp.AD).Err()
+	cmds, err := RC.Pipelined(ctx, func(pipe redis.Pipeliner) error {
+		pipe.SRem(ctx, "employee", emp.AD)
+		pipe.Del(ctx, emp.AD)
+		return nil
+	})
+	// spew.Dump(val)
+	// spew.Dump(err1)
+	// spew.Dump(err2)
+	spew.Dump(cmds)
+	spew.Dump(err)
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "OK",
+	})
 }

@@ -6,23 +6,35 @@
         <label for="Name">姓名</label>
         <input id="Name" type="text" formControlName="Name" required>
         <button type="submit" [disabled]="!employeeForm.valid">增加</button>
-        <ul>
+        <!-- <ul>
             <li *ngFor="let employee of employees">
                 <span>{{employee.AD}}</span>
                 <span>{{employee.Name}}</span>
             </li>
-        </ul>
-        <mat-table [dataSource]="employees" matSort >
+        </ul> -->
+        <mat-paginator #paginator [length]="totalCount" [pageIndex]="0" [pageSize]="10" [pageSizeOptions]="[5, 10, 15]">
+        </mat-paginator>
+        <mat-table [dataSource]="employeesDataSource" matSort #sortTable="matSort"  matSortActive="AD" matSortDirection="asc">
             <ng-container matColumnDef="AD">
-                <mat-header-cell *matHeaderCellDef  mat-sort-header>員編</mat-header-cell>
+                <mat-header-cell *matHeaderCellDef mat-sort-header>員編</mat-header-cell>
                 <mat-cell *matCellDef="let row">{{ row.AD }}</mat-cell>
             </ng-container>
             <ng-container matColumnDef="Name">
                 <mat-header-cell *matHeaderCellDef>姓名</mat-header-cell>
                 <mat-cell *matCellDef="let row">{{ row.Name }}</mat-cell>
             </ng-container>
-            <mat-header-row *matHeaderRowDef="['AD','Name']"></mat-header-row>
-            <mat-row *matRowDef="let employee; columns: ['AD', 'Name']"></mat-row>
+            <ng-container matColumnDef="management">
+                <mat-header-cell *matHeaderCellDef>
+                    <u>管理</u>
+                </mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                    <button mat-button color="primary" (click)="update(row)">更新</button>
+                    <button mat-button color="warn" (click)="delete(row)">刪除</button>
+                </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="['AD','Name','management']"></mat-header-row>
+            <mat-row *matRowDef="let employee; columns: ['AD', 'Name','management']"></mat-row>
+
         </mat-table>
     </form>
     <!-- <p>Form Value: {{ employeeForm.value | json }}</p>

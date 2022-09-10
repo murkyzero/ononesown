@@ -1,10 +1,15 @@
-import { Component, OnInit,ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { map } from "rxjs/operators";
 import { FormBuilder } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import { EmployeeService } from './employee.service';
 import { Employee } from './employee.model';
+import { MatTableDataSource } from '@angular/material/table';
+import { PageEvent } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { Sort } from '@angular/material/sort';
+import { MatPaginator } from '@angular/material/paginator';
 // import { MatSort } from '@angular/material';
 
 @Component({
@@ -14,9 +19,12 @@ import { Employee } from './employee.model';
   styleUrls: ['./employee.component.css']
 })
 export class EmployeeComponent implements OnInit {
-  // @ViewChild('sortTable') sortTable: MatSort;
+  @ViewChild('paginator') paginator!: MatPaginator;
+  @ViewChild('sortTable') sortTable!: MatSort;
   employees: Employee[] = [];
   editEmployee: Employee | undefined;
+  employeesDataSource = new MatTableDataSource<any>();
+  totalCount: number = 10;
 
   employeeForm = this.fb.group({
     AD: ['', Validators.required],
@@ -25,7 +33,9 @@ export class EmployeeComponent implements OnInit {
 
   constructor(private employeeService: EmployeeService, private fb: FormBuilder) { }
 
-  ngOnInit(): void { this.getEmployees(); }
+  ngOnInit(): void {
+    this.getEmployees();
+  }
 
   getEmployees(): void {
     this.employeeService.getEmployeees()
@@ -33,6 +43,9 @@ export class EmployeeComponent implements OnInit {
         this.employees = employees;
         console.log(employees);
         console.log(this.employees)
+        this.employeesDataSource.data = this.employees
+        this.employeesDataSource.sort = this.sortTable
+        this.employeesDataSource.paginator = this.paginator
       });
   }
 
@@ -50,7 +63,27 @@ export class EmployeeComponent implements OnInit {
     console.log("Name=" + Name);
     const newEmployee: Employee = { AD, Name } as Employee;
     this.employeeService.addEmployee(newEmployee).subscribe();
-    this.employeeService.getEmployeees().subscribe(employees => { this.employees = employees; });
+    this.employeeService.getEmployeees().subscribe(employees => {
+      this.employees = employees;
+      this.employeesDataSource.data = this.employees
+      this.employeesDataSource.sort = this.sortTable
+      this.employeesDataSource.paginator = this.paginator
+    });
+  }
+
+  update(emailRow: any) {
+    console.log('回覆信件', emailRow.AD);
+  }
+
+  delete(emailRow: any) {
+    console.log('刪除信件', emailRow);
+    this.employeeService.deleteEmployee(emailRow.AD).subscribe();
+    this.employeeService.getEmployeees().subscribe(employees => {
+      this.employees = employees;
+      this.employeesDataSource.data = this.employees
+      this.employeesDataSource.sort = this.sortTable
+      this.employeesDataSource.paginator = this.paginator
+    });
   }
 
   /**
