@@ -28,8 +28,8 @@
                     <u>管理</u>
                 </mat-header-cell>
                 <mat-cell *matCellDef="let row">
-                    <button mat-button color="primary" (click)="update(row)">更新</button>
-                    <button mat-button color="warn" (click)="delete(row)">刪除</button>
+                    <button type="button" mat-button color="primary" (click)="update(row)">更新</button>
+                    <button type="button" mat-button color="warn" (click)="delete(row)">刪除</button>
                 </mat-cell>
             </ng-container>
             <mat-header-row *matHeaderRowDef="['AD','Name','management']"></mat-header-row>
