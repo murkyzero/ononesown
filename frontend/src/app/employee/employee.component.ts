@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { map } from "rxjs/operators";
 import { FormBuilder } from '@angular/forms';
@@ -10,6 +10,7 @@ import { PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Sort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
+import { fromEvent } from 'rxjs'
 // import { MatSort } from '@angular/material';
 
 @Component({
@@ -21,6 +22,7 @@ import { MatPaginator } from '@angular/material/paginator';
 export class EmployeeComponent implements OnInit {
   @ViewChild('paginator') paginator!: MatPaginator;
   @ViewChild('sortTable') sortTable!: MatSort;
+  @ViewChild('filter', { static: true }) filter!: ElementRef;
   employees: Employee[] = [];
   editEmployee: Employee | undefined;
   employeesDataSource = new MatTableDataSource<any>();
@@ -34,7 +36,22 @@ export class EmployeeComponent implements OnInit {
   constructor(private employeeService: EmployeeService, private fb: FormBuilder) { }
 
   ngOnInit(): void {
+
+
     this.getEmployees();
+    fromEvent(this.filter.nativeElement, 'keyup')
+      //.debounceTime(300)
+      //.distinctUntilChanged()
+      .subscribe(() => {
+        this.getEmployees();
+        this.employeesDataSource.filter = (this.filter.nativeElement as HTMLInputElement).value;
+      });
+
+    this.employeesDataSource.filterPredicate = (data: any, filter: string): boolean => {
+      console.log("data"+data)
+      console.log("filet"+filter)
+      return data.AD.indexOf(filter) !== -1;//用AD濾掉
+    };
   }
 
   getEmployees(): void {
